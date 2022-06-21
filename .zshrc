@@ -28,3 +28,29 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt INC_APPEND_HISTORY
 export HISTTIMEFORMAT="[%F %T] "
 setopt EXTENDED_HISTORY
+
+# Alias for tmux
+alias tm='tmux new -s || tmux attach -t'
+# Attaches tmux to a session (example: ta portal)
+alias ta='tmux attach -t'
+# Creates a new session
+alias tn='tmux new -s'
+# Lists all ongoing sessions
+alias tl='tmux list-sessions'
+# Kill section
+alias tk='tmux kill-session -t'
+
+# Create tmux thread name quanghuy0497 whenever opening Terminal
+session_name="quanghuy0497"
+# 1. First you check if a tmux session exists with a given name.
+tmux has-session -t=$session_name 2> /dev/null
+# 2. Create the session if it doesn't exists.
+if [[ $? -ne 0 ]]; then
+  TMUX='' tmux new-session -d -s "$session_name"
+fi
+# 3. Attach if outside of tmux, switch if you're in tmux.
+if [[ -z "$TMUX" ]]; then
+  tmux attach -t "$session_name"
+else
+  tmux switch-client -t "$session_name"
+fi
